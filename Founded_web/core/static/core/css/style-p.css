@@ -1,0 +1,175 @@
+.slider{
+    margin: 0;
+    min-height: 100vh;
+    background-image: url('../img/banner.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mysocial{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.slider::before{
+  content: "";
+  width: 100%;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.navbar-light .navbar-toggler {
+    color: #fff;
+    border-color:#fff;
+    background: white;
+
+}
+
+.navbar-light .navbar-brand {
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff;
+}
+
+body{
+  background-color: #EBEEF1;
+}
+
+.site-heading{
+  color: white;
+  text-align: center;
+}
+
+h1{
+  font-size: 10vw;
+}
+
+h2{
+    font-size:5vw;
+    text-align: center;
+}
+
+.mycar{
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.mycard{
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.description{
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.my-row{
+  min-height: 30vh;
+  background-color: #fff;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
+  border: 1px solid;
+}
+
+.my-col{
+  text-align: center;
+  font-family: Tahoma,Arial,Helvetica,Sans,sans-serif;
+  font-size: 25px;
+}
+
+p{
+  text-align: center;
+}
+
+.p{
+  text-align: center;
+  font-size: 30px;
+  font-family: Tahoma,Arial,Helvetica,Sans,sans-serif;
+}
+
+.hunger{
+  text-align: center;
+}
+
+.mybutton{
+  margin-bottom: 10px;
+  padding-bottom: auto; 
+  width: 100%;
+}
+
+.but{
+    width: 280px;
+    height: 50px;
+}
+
+.imagen{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.logLoad{
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+}
+
+.logo{
+  margin: 2px;
+  width: 100px;
+  height: 40px;
+}
+
+.ir-arriba {
+    display:none;
+    padding:30px;
+    background-repeat: no-repeat;
+    font-size:20px;
+    color:black;
+    cursor:pointer;
+    position: fixed;
+    bottom:20px;
+    right:20px;
+    z-index: 2;
+}
+
+.up{
+    width: 50px;
+    height: 50px;
+}
+
+h5{
+    color: black;
+}
+
+.mylog{          
+  padding-bottom: auto; 
+  width: 100%;
+}
+
+.titulo{
+  margin: auto;
+}

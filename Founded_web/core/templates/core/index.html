@@ -1,0 +1,240 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+{% block title %}
+Home
+{% endblock %}
+{% block img %}
+<a id="logimg" class="navbar-brand">
+</a>
+<a class="navbar-brand" href="#">Founded</a>
+{% endblock %}
+{% block link %}
+<a id="log" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Login</a>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <a id="LogOut" class="dropdown-item">
+      Ingresar/Salir
+    </a>
+</div>
+{% endblock %}
+{% block head %}
+<h1>FOUNDED</h1>
+    <div class="input-group mb-3 justify-content-center">
+        <div class="input-group col-5">
+            <select id="formulario" class="custom-select">
+                <option disabled selected>Productos</option>
+                <option>Televisores</option>
+                <option>Lavadoras</option>
+                <option>Refrigeradoras</option>
+                <option>Celulares</option>
+                <option>Impresoras</option>
+                <option>Licuadoras</option>
+                <option>Microondas</option>
+                <option>Tablets</option>
+                <option>Videojuegos</option>
+              </select>
+          <div class="input-group-append">
+              <a href="#resultado"><button id="boton" class="btn btn-danger" type="button">Buscar</button></a>
+          </div>
+        </div>
+    </div>
+{% endblock %}
+{% block popup %}
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Ingresar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <button id="Google" type="button" class="btn btn-outline-link"><img class="but" src="{% static 'core/img/google.jpeg' %}"></button>
+          <button id="Facebook" type="button" class="btn btn-outline-link"><img class="but" src="{% static 'core/img/fb.jpeg' %}"></button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<a class="ir-arriba" title="Volver arriba">
+    <span class="fa-stack">
+        <img class="up" src="{% static 'core/img/up.png' %}" alt="">
+    </span>
+</a>
+<div id="resultado" class="container"></div>   
+      <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyClSJWS9YeZGeyT2WNJuc2z_zwNKRRmV3A",
+            authDomain: "founded-3c552.firebaseapp.com",
+            databaseURL: "https://founded-3c552.firebaseio.com",
+            projectId: "founded-3c552",
+            storageBucket: "founded-3c552.appspot.com",
+            messagingSenderId: "425843334789"
+        };
+
+        firebase.initializeApp(config);
+       
+        const formulario = document.querySelector('#formulario');
+        const boton = document.querySelector('#boton');
+        const resultado = document.querySelector('#resultado');
+
+        var popup = document.getElementById("myModel");
+
+        var dbRefObject = firebase.database().ref().child('Productos');
+
+        dbRefObject.once("value", function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+        const item = childSnapshot.val();
+        productos.push(item);    
+        }); 
+        });
+
+        const productos = [];
+
+        const filtrar=()=>{
+          resultado.innerHTML='';
+          const texto = formulario.value.toLowerCase();
+          for(let producto of productos){
+            let nombre = producto.TIPO.toLowerCase();
+            if(nombre.indexOf(texto) !== -1){
+              resultado.innerHTML +=`
+              <br>
+              <div class="row my-row">
+                <div class="col-sm-3 my-col titulo">
+                  <img class="imagen" src="${producto.IMAGEN}">
+                </div>        
+                <div class="col-sm-6 my-col titulo">
+                    <p>${producto.MARCA}</p>
+                    <p class="p">${producto.NOMBRE}</p>
+                </div>          
+                <div class="col-sm-3 my-col">
+                  <img class="logo" src="${producto.TIENDA_1}">
+                  <button onclick="window.open('${producto.LINK_1}')" type="button" class="btn btn-outline-info mybutton">${producto.PRECIO_1}</button>
+                  <img class="logo" src="${producto.TIENDA_2}">
+                  <button onclick="window.open('${producto.LINK_2}')" type="button" class="btn btn-outline-info mybutton">${producto.PRECIO_2}</button>
+                  <img class="logo" src="${producto.TIENDA_3}">
+                  <button onclick="window.open('${producto.LINK_3}')" type="button" class="btn btn-outline-info mybutton">${producto.PRECIO_3}</button>
+                  <img class="logo" src="${producto.TIENDA_4}">
+                  <button onclick="window.open('${producto.LINK_4}')" type="button" class="btn btn-outline-info mybutton">${producto.PRECIO_4}</button>
+                  </div>
+              </div>
+              <br>
+              `
+            }
+          } 
+          
+          if(resultado.innerHTML===''){
+            resultado.innerHTML += `
+              <p>Producto no encontrado</p>
+            `
+          }
+        }
+        boton.addEventListener('click',filtrar);
+        
+        document.getElementById('formulario').onkeypress = function(e){
+          if (!e) e = window.event;
+          var keyCode = e.keyCode || e.which;
+          if (keyCode == '13'){
+            document.getElementById("boton").click();
+            return false;
+          }
+        }
+
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            document.getElementById("log").innerHTML=user.displayName;
+            document.getElementById("logimg").innerHTML +=`<div class="container"><img class="rounded float-right logLoad" src="${user.photoURL}" alt="" ></div>`
+            $(document).ready(function(){
+              $('#myModal').modal('hide')
+              });           
+          } else {
+            $(document).ready(function(){
+              $('#myModal').modal('show')
+              });
+          }
+          
+        });
+
+        document.getElementById("LogOut").addEventListener("click", function()
+        {   
+          firebase.auth().signOut().then(function() {
+              window.location="{% url 'home' %}";
+          }, function(error) {
+              console.log('Signout failed')
+          });        
+        })
+
+        document.getElementById("Google").addEventListener("click", function()
+        { 
+           
+          var provider = new firebase.auth.GoogleAuthProvider();
+          firebase.auth().signInWithPopup(provider).then(function(result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = result.credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+          // ...
+          }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+          });
+        
+        })
+
+        document.getElementById("Facebook").addEventListener("click", function()
+        {   
+          var provider = new firebase.auth.FacebookAuthProvider();
+          firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            var user = firebase.auth().currentUser;
+          }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+          });
+        
+        })
+
+  </script>
+  <script>
+      $(document).ready(function () {
+  
+            $('.ir-arriba').click(function(){
+                $('body, html').animate({
+                    scrollTop: '0px'
+                }, 1000);
+            });
+  
+            $(window).scroll(function(){
+                if( $(this).scrollTop() > 0 ){
+                    $('.ir-arriba').slideDown(600);
+                } else {
+                    $('.ir-arriba').slideUp(600);
+                }
+            });
+  
+            $('.ir-abajo').click(function(){
+                $('body, html').animate({
+                    scrollTop: '1000px'
+                }, 1000);
+            });
+  
+        });
+    </script> 
+{% endblock %}
